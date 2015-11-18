@@ -11,7 +11,7 @@
         <h1>codehighlight.jsとは</h1>
         <div>
           JavascriptやCSSのソースを、いい感じにハイライト表示してくれるJavascriptです。
-          すでに有名どころとして<code>Crayon Syntax Highlighter</code>や<code>highlight.js</code>がありますが、<code>&lt;</code>や<code>&gt;</code>はサニタイズする必要があり、そのまま貼り付けられないので面倒。
+          すでに有名どころとして<code>Syntax Highlighter</code>や<code>highlight.js</code>がありますが、<code>&lt;</code>や<code>&gt;</code>はサニタイズする必要があり、そのまま貼り付けられないので面倒。
         </div>
         <div>というわけで、簡単に作れるかな？と思い</div>
         <ul>
@@ -38,16 +38,16 @@
       </section>
       <section>
         <h1>bower対応</h1>
-        <div>codehighlight.jsとこの勉強会資料とはプロジェクトを分けたので、いちいちファイルコピーしなくてもいいようにbowerに登録してみた。</div>
+        <div>codehighlight.jsと勉強会資料とはプロジェクトを分けたので、いちいちファイルコピーしなくてもいいようにbowerに登録してみた。</div>
         <div><code>> bower install codehighlight.js</code></div>
-        <div>
-          でインストールできます。<br>
-          が、修正のたびにbowerにバージョン情報を登録するのが面倒になって、開発環境では結局シンボリックリンクにしてしまいました。
-          
-        </div>
-        <div>バージョン情報は</div>
-        <div><code>> bower info codehighlight.js</code></div>
-        <div>で確認できます。</div>
+        <div>でインストールできます。</div>
+        <div>しかし、修正のたびにいちいち</div>
+        <ul>
+          <li>bowerにバージョン情報を登録する</li>
+          <li>githubにpush</li>
+          <li>bower update</li>
+        </ul>
+        <div>の手順がかえって面倒になって、開発環境では結局シンボリックリンクにしてしまいました。</div>
       </section>
       <section>
         <h1>作ってみて、感想</h1>
@@ -62,7 +62,10 @@
       <section>
         <h1>github公開中</h1>
         <div>codehighlight.jsはgithubで公開しています。</div>
+        <div>バージョン情報は<code>> bower info codehighlight.js</code>で確認できます。</div>
         <div class="exlink">参考(外部リンク)：<a href="https://github.com/TOMO-YOSHIDA/codehighlight.js" target="_blank">codehighlight.js(github)</a></div>
+        <div class="exlink">参考(外部リンク)：<a href="https://highlightjs.org/" target="_blank">highlight.js</a></div>
+        <div class="exlink">参考(外部リンク)：<a href="http://alexgorbatchev.com/SyntaxHighlighter/" target="_blank">SyntaxHighlighter</a></div>
       </section>
       <footer>
         <hr>
@@ -73,7 +76,7 @@
             <div class="name">日帰りキャンパー</div>
             <!-- 経歴とか-->
             <div class="description">
-              2012年7月入社。猫派。<br>
+              2012年7月入社。猫派。
               マイブームはJavascript, TypeScript, CSS3, HTML5。
             </div>
           </div>

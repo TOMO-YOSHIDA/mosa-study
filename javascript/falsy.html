@@ -54,12 +54,18 @@
           	if(!v) console.log(v + " is falsy!");
           });
           
-        </script><span>
-          ブラウザで実行する場合は<code>document.all</code>もfalsyですが、特に覚えておく必要はないでしょう。<br>
-          nullとundefinedの違いについては</span><span><span>「</span><a href="null-and-undefined.html">nullとundefined, NaN</a><span>」</span></span><span>を参照してください。</span>
+        </script>
+        <div>
+          | ブラウザで実行する場合は<code>document.all</code>もfalsyですが、特に覚えておく必要はないでしょう。
+          | nullとundefinedの違いについては
+          +pagelink('nullとundefined, NaN', 'null-and-undefined')
+          | を参照してください。
+          
+        </div>
         <div>
           NaNはあまり馴染みがありませんが、数字に変換しようとして数字にならなかった場合に発生します。
           例えば下記のように無茶なことをすると結果はNaNになります。
+          
         </div>
         <script title="NaN" type="code/Javascript">
           var c = "文字列で" / "割り算";
@@ -138,7 +144,7 @@
             <div class="name">日帰りキャンパー</div>
             <!-- 経歴とか-->
             <div class="description">
-              2012年7月入社。猫派。<br>
+              2012年7月入社。猫派。
               マイブームはJavascript, TypeScript, CSS3, HTML5。
             </div>
           </div>

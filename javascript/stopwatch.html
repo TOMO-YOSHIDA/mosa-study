@@ -10,9 +10,9 @@
       <section>
         <h1>パフォーマンス測定関数の作成</h1>
         <div><a href="./performance.html">パフォーマンス測定</a>で紹介した<code>console.time</code>関数が用意されていないブラウザもあります。
-          そんな時は、自分で作ってしまいましょう。<br>
-          ただしDate関数から時間を取得するので、精度はミリ秒です。
+          そんな時は、自分で作ってしまいましょう。
         </div>
+        <div>ただしDate関数から時間を取得するので、精度はミリ秒です。</div>
         <script title="IEには関数がないので自作する" type="code/Javascript">
           +function(){
           	// ここに計測開始時間をキャッシュ
@@ -40,8 +40,8 @@
           
         </script>
         <div>6行目、13行目を見てください。consoleオブジェクトを拡張する前に、すでに実装があるかをチェックするのは大切です。</div>
-        <div>Javascriptでは、ビルトイン関数やメソッドのほとんどを上書きできます。</div>
-        <div>チェックせずにネイティブ実装を上書きしてしまうと、計測精度が下がってしまいます。</div>
+        <div>Javascriptでは、ビルトイン関数やメソッドのほとんどを上書きできてしまうからです。</div>
+        <div>チェックせずに上書きしてしまうと、計測精度がミリ秒単位に下がります。</div>
       </section>
       <footer>
         <hr>
@@ -52,7 +52,7 @@
             <div class="name">日帰りキャンパー</div>
             <!-- 経歴とか-->
             <div class="description">
-              2012年7月入社。猫派。<br>
+              2012年7月入社。猫派。
               マイブームはJavascript, TypeScript, CSS3, HTML5。
             </div>
           </div>

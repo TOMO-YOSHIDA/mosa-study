@@ -12,11 +12,11 @@
         <div>Javascriptでは、<code>var a = b || c;</code>の様な表記がたくさん出てきます。<span>「</span><a href="../../javascript/falsy.html">falsyな値</a><span>」</span>の理解が前提知識として必要です。まだの人はいったんそちらを修了してから見てください。
         </div>
         <div>
-          JavaやCなどでは、<code>b || c</code>の結果はbooleanなので、aはtrueかfalseが返るのでは？と思うかもしれません。そもそもboolean同士でしかこの書き方はできません。
+          JavaやCなどでは、<code>b || c</code>の結果はbooleanなので、aはtrueかfalseが返るのでは？と思うかもしれません。
           
         </div>
         <div>
-          これはJavascript特有の書き方で、bかcの、どちらかtruthyと判定されたほうがaに代入されます。
+          これはJavascript特有の書き方で、左から順番に評価し、truthyと最初に判定された結果が代入されます。
           bとcの型は問いません。
           
         </div>
@@ -34,7 +34,7 @@
           
         </script>
         <div>どういうこと？</div>
-        <div>「||」は、左から順番に変数を判定していきます。</div>
+        <div>「||」は、<span class="important">左から順番に変数を判定</span>していきます。</div>
         <div>変数がfalseと判定されると、次の変数の評価に入り、それがtrueと判定されるまで繰り返します。</div>
         <div>最後から2つ目までにtrueと判定されないと、最後の値がtrue/falseにかかわらず代入されます。</div>
         <div>これを利用して、値が入っていない場合にデフォルト値を用意するといった使い方があります。</div>
@@ -84,7 +84,7 @@
             <div class="name">日帰りキャンパー</div>
             <!-- 経歴とか-->
             <div class="description">
-              2012年7月入社。猫派。<br>
+              2012年7月入社。猫派。
               マイブームはJavascript, TypeScript, CSS3, HTML5。
             </div>
           </div>

@@ -235,3 +235,6 @@ table td.true {
 table td.false {
   color: #97005c;
 }
+.important {
+  font-weight: bold;
+}
