@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>正規表現</title>
+    <link rel="stylesheet" href="/mosa-study/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>正規表現</h1>
+      <div>使いこなせば超絶便利。そしてなんかプロっぽい。</div>
+      <section>
+        <h1>正規表現による値のチェック</h1>
+        <script title="値のチェック" type="code/Javascript">
+          // "^"と"$"で完全一致にするのがポイント
+          var values = /^(9999|2222|1234)$/;
+          
+          console.log('has value? -> %s',values.test('1234')); // -> true
+          console.log('has value? -> %s',values.test('12345')); // -> false
+          
+          // "^"と"$"なしの場合、部分一致でOKになる
+          var values = /9999|2222|1234/;
+          console.log('has value? -> %s',values.test('12345')); // -> true
+          
+        </script>
+      </section>
+      <section>
+        <h1>正規表現による文字列置換</h1>
+        <script title="値の変換" type="code/Javascript">
+          var regex1 = /A/;
+          var regex2 = /A/g; // gオプションを追加
+          
+          var str = "AoAoAoAoA";
+          
+          // 最初にマッチした文字だけ変換される
+          console.log(str.replace(regex1, 'a')); // -> aoAoAoAoA
+          
+          // マッチを探し続けて変換する
+          console.log(str.replace(regex2, 'a')); // -> aoaoaoaoa
+          
+        </script>
+      </section>
+      <section>
+        <h1>正規表現とキャプチャ</h1>
+        <script title="値のキャプチャ" type="code/Javascript">
+          // かっこで数字を３桁、４桁、４桁に区切ってキャプチャする
+          var regex = /^(\d{3})(\d{4})(\d{4})$/;
+          var str = '09011112222';
+          
+          // キャプチャ文字を"-"で区切って変換する
+          console.log(str.replace(regex, '$1-$2-$3')); // -> 090-1111-2222
+          
+          
+        </script>
+        <script title="値のキャプチャと変換" type="code/Javascript">
+          var regex = /<([\w]+?).*>(.*)<\/\1>/g;
+          var str = '<span>span text</span> and <div>div text</div>';
+          console.log(str.replace(regex, '"$2"'));
+          
+        </script>
+        <div>正規表現はsakuraエディタなどでも使えるので覚えておくと便利です。</div>
+      </section>
+      <section>
+        <div class="exlink">参考(外部リンク)：<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_Expressions" target="_blank">MDN:正規表現</a></div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/mosa-study" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/mosa-study/lib.min.js"></script>
+    <script>CodeHighlight.execute();</script>
+  </body>
+</html>
