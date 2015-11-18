@@ -28,22 +28,22 @@
           
         </div>
         <script title="Deferred" type="code/Javascript">
-          // １秒後にresolveする関数
+          // １.5秒後にresolveする関数
           var delayResolve = function(){
           	var d = new $.Deferred();
           	setTimeout(function(){
           		d.resolve('resolve');
-          	}, 1000);
+          	}, 1500);
           	console.log('delayResolve:START');
           	return d.promise();
           };
           
-          // １秒後にrejectする関数
+          // 0.7秒後にrejectする関数
           var delayReject = function(){
           	var d = new $.Deferred();
           	setTimeout(function(){
           		d.reject('reject');
-          	}, 1000); // 遅延実行
+          	}, 700); // 遅延実行
           	console.log('delayReject.START');
           	return d.promise();
           };
@@ -54,7 +54,7 @@
           		var d = new $.Deferred();
           		setTimeout(function(){
           			d[arg](arg);
-          		}, late);
+          		}, 1000);
           		console.log('callback(%d):%s',id, arg);
           		return d.promise();
           	};
@@ -141,6 +141,10 @@
           	.done(callback(1))
           	.fail(callback(2)); // callback(2):reject
           
+          // whenによるパラレル実行(rejectあり、全部の終了を待つ)
+          $.when(delayResolve(),delayReject(),delayResolve())
+          	.then(callback(1),callback(2)); // callback(2):reject
+          
         </script>
         <div>
           <code>$.when()</code>の中でどれか１つでもrejectされた場合、即座にfailが実行されます。
@@ -154,18 +158,16 @@
       <!-- 実験用-->
       <script>
         +function(g){
-        	var late = 1000;
-        
         	g.delayResolve = function(arg){
         		var d = new $.Deferred();
-        		setTimeout(function(){d.resolve('resolve')}, late);
+        		setTimeout(function(){d.resolve('resolve')}, 1500);
         		console.log('delayResolve:START:' + arg);
         		return d.promise();
         	};
         
         	g.delayReject = function(arg){
         		var d = new $.Deferred();
-        		setTimeout(function(){d.reject('reject')}, late);
+        		setTimeout(function(){d.reject('reject')}, 800);
         		console.log('delayReject.START:' + arg);
         		return d.promise();
         	};
@@ -173,7 +175,7 @@
         	g.callback = function(id){
         		return function(arg){
         			var d = new $.Deferred();
-        			setTimeout(function(){d[arg](arg)}, late);
+        			setTimeout(function(){d[arg](arg)}, 1000);
         			console.log('callback(%d):%s',id, arg);
         			return d.promise();
         		};
