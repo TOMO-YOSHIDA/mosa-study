@@ -45,6 +45,11 @@
           ここだけ忘れないように。
           
         </div>
+        <div>
+          ほんとは<code>-0</code>っていう第７のfalsyな値がありますが、0とほぼ同じ扱いになるので今回は省略。
+          <code>0 === -0</code>はtrueだし、<code>String(-0)</code>は"0"です。
+          
+        </div>
         <script title="falsyな値のチェック" type="code/Javascript">
           // 配列の中には全7種類のfalsyな値が格納されている
           var falsy = [0, "", false, null, undefined, NaN, document.all];

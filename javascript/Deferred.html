@@ -18,8 +18,8 @@
         <li>Deferredを作成する</li>
         <li>Deferredからpromiseを返す</li>
         <li>promiseに次に実行したい関数を登録する</li>
-        <li>Deferredの状態を更新する</li>
-        <li>状態によってdone or failのどちらかが実行される</li>
+        <li>resolveかrejectで状態を更新する</li>
+        <li>状態変更によってdone or failのどちらかが実行される</li>
       </ol>
       <section>
         <h1>下準備</h1>
@@ -129,26 +129,29 @@
       </section>
       <section>
         <h1>$.when</h1>
-        <div><code>$.when()</code>はpromiseオブジェクトを並列で待ちます。</div>
-        <script title="whenの動作確認" type="code/Javascript">
-          // whenによるパラレル実行
+        <div><code>$.when()</code>はpromiseオブジェクトを並列実行します。</div>
+        <script title="when-done,failの動作確認" type="code/Javascript">
+          // when-doneによるパラレル実行
           $.when(delayResolve(),delayResolve(),delayResolve())
           	.done(callback(1)) // callback(1):resolve
           	.fail(callback(2));
           
-          // whenによるパラレル実行(rejectあり)
+          // when-failによるパラレル実行(rejectあり)
           $.when(delayResolve(),delayReject(),delayResolve())
           	.done(callback(1))
           	.fail(callback(2)); // callback(2):reject
-          
-          // whenによるパラレル実行(rejectあり、全部の終了を待つ)
+        </script>
+        <div>doneの場合、when内に登録したpromise全てがresolveを返さないと実行されません。</div>
+        <div>failの場合、どれか一つでもrejectされたら他の結果を待たずに即実行されます。</div>
+        <script title="when-thenの動作確認" type="code/Javascript">
+          // when.thenによるパラレル実行(rejectあり、全部の終了を待つ)
           $.when(delayResolve(),delayReject(),delayResolve())
           	.then(callback(1),callback(2)); // callback(2):reject
-          
         </script>
         <div>
-          <code>$.when()</code>の中でどれか１つでもrejectされた場合、即座にfailが実行されます。
-          rejectがあっても全てを待って処理を進めたい場合、<code>then()</code>で待ち受ければすべての状態が更新されるまで待ちます。
+          thenの場合も、どれか一つでもrejectされたら即座に実行されます。
+          全ての関数処理が終わってから整合性をとりたい時などは別の方法を考えなくてはいけません。-> 課題
+          
           
         </div>
       </section>
@@ -160,14 +163,20 @@
         +function(g){
         	g.delayResolve = function(arg){
         		var d = new $.Deferred();
-        		setTimeout(function(){d.resolve('resolve')}, 1500);
+        		setTimeout(function(){
+        			console.log('delayResolve.END');
+        			d.resolve('resolve');
+        		}, 1500);
         		console.log('delayResolve:START:' + arg);
         		return d.promise();
         	};
         
         	g.delayReject = function(arg){
         		var d = new $.Deferred();
-        		setTimeout(function(){d.reject('reject')}, 800);
+        		setTimeout(function(){
+        			console.log('delayReject.END');
+        			d.reject('reject')
+        		}, 800);
         		console.log('delayReject.START:' + arg);
         		return d.promise();
         	};
@@ -175,7 +184,10 @@
         	g.callback = function(id){
         		return function(arg){
         			var d = new $.Deferred();
-        			setTimeout(function(){d[arg](arg)}, 1000);
+        			setTimeout(function(){
+        				console.log('callback.END');
+        				d[arg](arg);
+        			}, 1000);
         			console.log('callback(%d):%s',id, arg);
         			return d.promise();
         		};
