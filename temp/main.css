@@ -201,7 +201,7 @@ div.writer .description {
 li {
   margin-left: 1.5em;
 }
-code {
+section > div > code {
   font-family: "meiryo";
   font-size: 1em;
   display: inline-block;
@@ -238,10 +238,25 @@ table td.false {
 .important {
   font-weight: bold;
 }
-.making {
+.making:after {
+  content: "作成中";
   background: #179C55;
   color: white;
   border-radius: 0.4em;
   padding: 0 0.4em;
   margin-left: 0.4em;
+  font-weight: normal;
+}
+.inspection:after {
+  content: "検証中";
+  background: #F1F918;
+  color: #F90000;
+  border-radius: 0.4em;
+  padding: 0 0.4em;
+  margin-left: 0.4em;
+  font-weight: bold;
+  text-decoration: none;
+}
+.strike {
+  text-decoration: line-through;
 }
