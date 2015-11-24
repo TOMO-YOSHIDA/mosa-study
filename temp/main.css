@@ -193,7 +193,7 @@ div.writer .name {
   color: #339;
 }
 div.writer .pic {
-  align: right;
+  float: right;
 }
 div.writer .description {
   color: #333;
@@ -208,6 +208,15 @@ section > div > code {
   border-radius: 0.5em;
   background: rgba(0, 0, 0, 0.06);
   padding: 0 0.2em;
+}
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+  justify-content: flex-start;
+}
+.flex div {
+  padding: 0.4em 1em;
 }
 table {
   width: 100%;
@@ -238,25 +247,50 @@ table td.false {
 .important {
   font-weight: bold;
 }
+.deadlink:after,
+.inspection:after,
 .making:after {
-  content: "作成中";
-  background: #179C55;
-  color: white;
   border-radius: 0.4em;
   padding: 0 0.4em;
   margin-left: 0.4em;
   font-weight: normal;
 }
+.making:after {
+  content: "✎ 作成中";
+  background: #179C55;
+  color: white;
+}
 .inspection:after {
   content: "検証中";
   background: #F1F918;
   color: #F90000;
-  border-radius: 0.4em;
-  padding: 0 0.4em;
-  margin-left: 0.4em;
   font-weight: bold;
-  text-decoration: none;
+}
+.deadlink:after {
+  content: "✕ 未作成";
+  background: #7B7B7B;
+  color: white;
 }
 .strike {
   text-decoration: line-through;
+}
+.stars {
+  margin-left: 0.5em;
+  color: yellow;
+  text-shadow: 1px 1px 1px #000;
+}
+.exlink {
+  margin-bottom: 0;
+}
+dl {
+  margin-left: 0;
+}
+dl dt {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 1.3em;
+}
+dl dd {
+  margin-top: 0.5em;
+  margin-left: 0;
 }

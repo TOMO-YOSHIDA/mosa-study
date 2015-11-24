@@ -31,7 +31,6 @@
               <li><a href="javascript/equal.html">値の比較「==」と「===」</a></li>
               <li><a href="javascript/falsy.html">falsyな値</a></li>
               <li class="disabled">JSON</li>
-              <li><a href="javascript/for-and-forEach.html" class="making">forとforEach</a></li>
             </ul>
           </li>
           <li>ショートハンド(略記法)
@@ -42,13 +41,19 @@
               <li class="disabled">!!とか~~とか!0とかvoid 0とか</li>
             </ul>
           </li>
+          <li>関数
+            <ul>
+              <li><a href="javascript/function/function.html">関数 Function</a></li>
+              <li><a href="javascript/function/function-object.html">関数の実体化(new)</a></li>
+              <li><a href="javascript/function/this.html" class="making">this</a></li>
+              <li><a href="javascript/function/prototype.html" class="deadlink">プロトタイプ prototype</a></li>
+              <li><a href="javascript/function/closure.html" class="deadlink">クロージャ closure</a></li>
+            </ul>
+          </li>
           <li>中級編
             <ul>
               <li class="disabled">Javascriptはシングルスレッドである</li>
               <li><a href="javascript/scope.html" class="making">変数のスコープ</a></li>
-              <li class="disabled">関数 Function</li>
-              <li class="disabled">this</li>
-              <li class="disabled">prototype</li>
               <li><a href="javascript/Deferred.html" class="making">Defferd, Promise</a></li>
               <li><a href="javascript/regexp.html" class="making">正規表現</a></li>
               <li class="disabled">ArrayとObject</li>
@@ -75,32 +80,49 @@
       			li.disabled 正規表現
       			li.disabled 	正規表現リテラルとRegExp
       			li.disabled 	入力値のチェック RegExp.test
-      			li.disabled 	前ゼロを除去する"0010" -> "10"
-      -->
-      <!-- section
-      h1 パフォーマンス編
-      ol
-      	li パフォーマンス
-      		ul
-      			li.disabled forとforEach
-      			li.disabled undefinedとvoid 0
-      			li.disabled クロージャとメモリリーク
-      
-      
+      			li.disabled 	前ゼロを除去する"0010" -> "10" / String(+"0010")
       
       -->
-      <!-- section-->
-      <!-- 	h1 CSS-->
-      <!--		ol
-      // flex
-      // レスポンシブ
-      // 脱bootstrap
-      -->
+      <section>
+        <h1>次のステップ</h1>
+        <div>今回は対象外</div>
+        <ol>
+          <li>便利ワザ
+            <ul>
+              <li class="disabled">スクリプトレット</li>
+              <li class="disabled">String.replace</li>
+            </ul>
+          </li>
+          <li>パフォーマンス
+            <ul>
+              <li><a href="javascript/for-and-forEach.html" class="deadlink">forとforEach</a></li>
+              <li class="disabled">undefinedとvoid 0</li>
+            </ul>
+          </li>
+          <li>障害対策
+            <ul>
+              <li class="disabled">クロージャとメモリリーク</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h1>CSS(今回は対象外)</h1>
+        <ol>
+          <li class="disabled">脱bootstrap
+            <ul>
+              <li class="disabled">flex</li>
+            </ul>
+            <!-- レスポンシブ-->
+          </li>
+        </ol>
+      </section>
       <section>
         <h1>appendix</h1>
         <ol>
           <!-- +index('style guide', 'style-guide/index')-->
           <li><a href="appendix/codehighlight.html">codehighlight.jsについて</a></li>
+          <li><a href="appendix/books.html">参考文献</a></li>
         </ol>
       </section>
     </article>
