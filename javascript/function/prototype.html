@@ -1,23 +1,92 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>プロトタイプ</title>
+    <title>prototype</title>
     <link rel="stylesheet" href="/mosa-study/study.css">
   </head>
   <body>
     <article>
-      <h1>プロトタイプ</h1>
-      <div>まだ書いてません</div>
-      <ul>
-        <li>クラスの継承</li>
-        <li>プロトタイプチェーン</li>
-      </ul>
+      <h1>prototype</h1>
       <section>
-        <h1></h1>
-        <div></div>
-        <script title="forとforEach" type="code/Javascript"></script>
-        <div></div>
+        <div>
+          prototypeは、関数の「設計図」です。
+          Javascriptは関数の継承をprototypeを介して行います。
+          
+        </div>
       </section>
+      <section>
+        <h1>prototype</h1>
+        <div>
+          まずは簡単な例を。
+          
+        </div>
+        <script title="簡単なprototypeサンプル" type="code/Javascript">
+          // 名前を保持するだけの関数
+          function Animal(name){
+          	this.name = name
+          };
+          
+          // 猫インスタンスを作成
+          var cat = new Animal('cat');
+          
+          console.log(cat.say); // undefined, 猫はまだ話せない
+          
+          // 設計図にsayを追加(インスタンスに追加ではない)
+          Animal.prototype.say = function(){return "I'm " + this.name};
+          
+          // 犬インスタンスを作成。しゃべられる！
+          var dog = new Animal('dog');
+          console.log(dog.say()); // I'm dog
+          
+          // 猫もしゃべられるようになった
+          console.log(cat.say()); // I'm cat
+          
+        </script>
+        <div>
+          これのなにが嬉しいの？って別に猫が話せるようになったのが嬉しい訳ではありません。
+          prototypeはインスタンスごとに作成されるわけではないのでメモリを消費しません。エコです。
+          prototypeに関数やプロパティを追加すると、それを使うインスタンス全てから参照できます。
+          
+        </div>
+        <div>
+          下記は悪い例です。
+          prototypeを使わずコンストラクタで関数を作って返しちゃうと、インスタンスごとに関数を持ってしまいます。
+          
+        </div>
+        <script title="やっちゃいけない例" type="code/Javascript">
+          function Animal(name) {
+          	this.name = name;
+          	this.say = function(){
+          		return "I'm " + this.name;
+          	};
+          }
+          
+          // 話せるけどインスタンスごとにメソッドを作成してしまう
+          var cat = new Animal('cat');
+          cat.say(); // -> I'm cat
+          
+        </script>
+      </section>
+      <!-- section
+      h1 prorotypeの継承
+      div.
+      	他の言語のクラス継承のように、prototypeも継承することができます。
+      	継承というか、拝借？
+      
+      script(title="prototype継承",type="code/Javascript").
+      	function Animal(name){this.name = name};
+      	Animal.prototype.say = function(){return "I'm " + this.name};
+      
+      	function Cat(){
+      		this.name = 'cat';
+      	}
+      	Cat.prototype = Animal.prototype;
+      
+      	var cat = new Cat();
+      	cat.say();
+      
+      
+      -->
       <footer>
         <hr>
         <div class="writer">
