@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>prototype</title>
+    <link rel="stylesheet" href="/mosa-study/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>prototype</h1>
+      <section>
+        <div>
+          prototypeは、関数の「設計図」です。
+          
+        </div>
+      </section>
+      <section>
+        <h1>prototype</h1>
+        <div>
+          まずは簡単な例を。
+          コンストラクタ関数を定義したあと、prototypeにプロパティをくっつけていきます。
+          
+        </div>
+        <script title="簡単なprototypeサンプル" type="code/Javascript">
+          // 名前を保持するだけの関数
+          function Animal(name){
+          	this.name = name
+          };
+          
+          // 猫インスタンスを作成
+          var cat = new Animal('cat');
+          assert(cat.say === undefined, '猫はまだ話せない')
+          
+          // prototypeにsayを追加(インスタンスに追加ではない)
+          Animal.prototype.say = function(){return "I'm " + this.name};
+          
+          // 犬インスタンスを作成。話せる！
+          var dog = new Animal('dog');
+          assert(dog.say(), '犬は話せる');
+          
+          // さっきまで話せなかった猫は？
+          assert(cat.say(), '猫も話せるようになった');
+          
+        </script>
+        <div>
+          これのなにが嬉しいの？って別に猫が話せるようになったのが嬉しい訳ではありません。
+          prototypeはインスタンスごとに作成されるわけではないのでメモリを消費しません。エコです。
+          prototypeに関数やプロパティを追加すると、それを使うインスタンス全てから参照できます。
+          
+        </div>
+        <div>
+          下記は悪い例です。
+          prototypeを使わずコンストラクタで関数を作って返しちゃうと、インスタンスごとに関数を持ってしまいます。
+          
+        </div>
+        <script title="やっちゃいけない例" type="code/Javascript">
+          // コンストラクタで全てを定義する
+          function Animal(name) {
+          	this.name = name;
+          	this.say = function(){
+          		return "I'm " + this.name;
+          	};
+          }
+          
+          // 話せるけどインスタンスごとにメソッドを作成してしまう
+          var cat = new Animal('cat');
+          
+          assert(cat.say(), 'とりあえずは話せる');
+          
+        </script>
+      </section>
+      <section>
+        <h1>prorotype拡張</h1>
+        <div>prototypeを拡張すると、ビルトインの関数にも機能を追加することできます。</div>
+        <div>
+          例えば、String.trimは文字の両端のスペースを削除しますが、文字の右端のスペースと全角を削除する'rtrim'メソッドを追加してみます。
+          
+        </div>
+        <script title="Stringを拡張する" type="code/Javascript">
+          String.prototype.rtrim = function(){
+          	return this.replace(/(\s|　)*$/, '');
+          }
+          
+          var s1 = 'テスト　　　'; // 右端に全角スペースがある
+          var s2 = 'テスト	 　'; // 右端にtab文字、半角スペース、全角スペースがある
+          var s3 = '  テスト  '; // 左端の半角スペース2個が削除されないことを確認する
+          
+          assert(s1.rtrim() === 'テスト', '右端のスペースが削除された');
+          assert(s2.rtrim() === 'テスト', '右端のスペースが削除された');
+          assert(s3.rtrim() === '  テスト',
+          					 '左端のスペースは残り、右端のスペースが削除された');
+          
+        </script>
+        <div>
+          prototype拡張を使うと、IE8以前のブラウザでString.trimを使えるようにしたり、Arrays.filterを使えるようにしたりできます。
+          プロっぽい。
+          
+        </div>
+      </section>
+      <section>
+        <h1>prorotype上書き</h1>
+        <div>
+          String.trimも、それ自体を上書きできます。
+          全角スペースもtrimできるようにしてみましょう。
+          
+        </div>
+        <script title="String.trimを上書きする" type="code/Javascript">
+          String.prototype.trim = function(){
+          	return this.replace(/^(\s|　)*|(\s|　)*$/g, '');
+          }
+          assert('　　　あ　　　'.trim() === 'あ', '上書き成功!');
+          
+        </script>
+        <div>
+          強力ですがページ内の全てのString.trimに影響があるのでよく見極めてください。
+          上書きせずに、別名で拡張するのがいいかもしれません。
+          
+          
+        </div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/mosa-study" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/mosa-study/lib.min.js"></script>
+    <script>
+      CodeHighlight.execute();
+      
+      !function(g){
+      	var f = function(){};
+      	g.console = g.console || {log:f, debug:f, error:f}
+      
+      	// assertを提供する
+      	g.assert = function(val, msg) {
+      		if(!!val)
+      			console.log('成功：%s, %s', val, msg);
+      		else
+      			console.error('失敗：%s, %s', val, msg);
+      	}
+      }(this);
+    </script>
+  </body>
+</html>

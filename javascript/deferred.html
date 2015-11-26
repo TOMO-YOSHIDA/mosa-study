@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Deferred, Promise</title>
+    <link rel="stylesheet" href="/mosa-study/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>Deferred, Promise</h1>
+      <section>
+        <div>現場でもよく使われる、Javascriptでの非同期実行について解説します。</div>
+        <div>
+          ここではjQueryのDeferredを使って解説します。
+          
+        </div>
+      </section>
+      <div>簡単に流れを説明すると</div>
+      <ol>
+        <li>Deferredを作成する</li>
+        <li>Deferredからpromiseを返す</li>
+        <li>promiseに次に実行したい関数を登録する</li>
+        <li>resolveかrejectで状態を更新する</li>
+        <li>状態変更によってdone or failのどちらかが実行される</li>
+      </ol>
+      <section>
+        <h1>下準備</h1>
+        <div>
+          このページでは下記のスクリプトがロード済みです。
+          
+        </div>
+        <script title="Deferred" type="code/Javascript">
+          // １.5秒後にresolveする関数
+          var delayResolve = function(){
+          	var d = new $.Deferred();
+          	setTimeout(function(){
+          		d.resolve('resolve');
+          	}, 1500);
+          	console.log('delayResolve:START');
+          	return d.promise();
+          };
+          
+          // 0.7秒後にrejectする関数
+          var delayReject = function(){
+          	var d = new $.Deferred();
+          	setTimeout(function(){
+          		d.reject('reject');
+          	}, 700); // 遅延実行
+          	console.log('delayReject.START');
+          	return d.promise();
+          };
+          
+          // resolve, rejectを受け取る関数を作る関数
+          var callback = function(id){
+          	return function(arg){
+          		var d = new $.Deferred();
+          		setTimeout(function(){
+          			d[arg](arg);
+          		}, 1000);
+          		console.log('callback(%d):%s',id, arg);
+          		return d.promise();
+          	};
+          };
+          
+        </script>
+      </section>
+      <section>
+        <h1>resolve</h1>
+        <div></div>
+        <script title="resolveの例" type="code/Javascript">
+          delayResolve().done(callback(1)); // 1秒後に -> callback(1):resolve
+          delayResolve().fail(callback(2)); // 実行されない
+          
+          
+        </script>
+      </section>
+      <section>
+        <h1>reject</h1>
+        <div></div>
+        <script title="rejectの例" type="code/Javascript">
+          delayReject().done(callback(1)); // 実行されない
+          delayReject().fail(callback(2)); // 1秒後に -> callback(2):reject
+          
+        </script>
+      </section>
+      <section>
+        <h1>then</h1>
+        <div></div>
+        <script title="thenの例" type="code/Javascript">
+          delayResolve().then(callback(1), callback(2)); // 1秒後に -> callback(1):resolve
+          delayReject().then(callback(3), callback(4)); // 1秒後に -> callback(4):reject
+          
+        </script>
+      </section>
+      <section>
+        <h1>resolve,rejectのchain</h1>
+        <div></div>
+        <script title="done, failの動作確認" type="code/Javascript">
+          //resolveで２つの関数が同時にコールされる
+          delayResolve()
+          	.done(callback(1)) // callback(1):resolve
+          	.fail(callback(2)) // 呼ばれない
+          	.done(callback(3)); // callback(3):resolve
+          
+          // rejectで２つの関数が同時にコールされる
+          delayReject()
+          	.done(callback(1)) // 呼ばれない
+          	.fail(callback(2)) // callback(2):reject
+          	.fail(callback(3)); // callback(3):reject
+          
+          
+        </script>
+      </section>
+      <section>
+        <h1>thenのchain</h1>
+        <div></div>
+        <script title="thenの動作確認" type="code/Javascript">
+          // resolveで1秒おきに３つの関数が順番にコールされる
+          delayResolve()
+          	.then(callback(1)) // callback(1):resolve
+          	.then(callback(2)) // callback(2):resolve
+          	.then(callback(3)); // callback(3):resolve
+          
+          // rejectで1秒おきに３つの関数が順番にコールされる
+          delayReject()
+          	.then(callback(1), callback(2)) // callback(2):reject
+          	.then(callback(3), callback(4)) // callback(4):reject
+          	.then(callback(5), callback(6)); // callback(6):reject
+          
+        </script>
+      </section>
+      <section>
+        <h1>$.when</h1>
+        <div><code>$.when()</code>はpromiseオブジェクトを並列実行します。</div>
+        <script title="when-done,failの動作確認" type="code/Javascript">
+          // when-doneによるパラレル実行
+          $.when(delayResolve(),delayResolve(),delayResolve())
+          	.done(callback(1)) // callback(1):resolve
+          	.fail(callback(2));
+          
+          // when-failによるパラレル実行(rejectあり)
+          $.when(delayResolve(),delayReject(),delayResolve())
+          	.done(callback(1))
+          	.fail(callback(2)); // callback(2):reject
+        </script>
+        <div>doneの場合、when内に登録したpromise全てがresolveを返さないと実行されません。</div>
+        <div>failの場合、どれか一つでもrejectされたら他の結果を待たずに即実行されます。</div>
+        <script title="when-thenの動作確認" type="code/Javascript">
+          // when.thenによるパラレル実行(rejectあり、全部の終了を待つ)
+          $.when(delayResolve(),delayReject(),delayResolve())
+          	.then(callback(1),callback(2)); // callback(2):reject
+        </script>
+        <div>
+          thenの場合も、どれか一つでもrejectされたら即座に実行されます。
+          全ての関数処理が終わってから整合性をとりたい時などは別の方法を考えなくてはいけません。-> 課題
+          
+          
+        </div>
+      </section>
+      <!-- jQueryのロード-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <div class="exlink">参考：<a href="http://techblog.yahoo.co.jp/programming/jquery-deferred/" target="_blank">爆速でわかるjQuery.Deferred超入門</a></div>
+      <!-- 実験用-->
+      <script>
+        +function(g){
+        	g.delayResolve = function(arg){
+        		var d = new $.Deferred();
+        		setTimeout(function(){
+        			console.log('delayResolve.END');
+        			d.resolve('resolve');
+        		}, 1500);
+        		console.log('delayResolve:START:' + arg);
+        		return d.promise();
+        	};
+        
+        	g.delayReject = function(arg){
+        		var d = new $.Deferred();
+        		setTimeout(function(){
+        			console.log('delayReject.END');
+        			d.reject('reject')
+        		}, 800);
+        		console.log('delayReject.START:' + arg);
+        		return d.promise();
+        	};
+        
+        	g.callback = function(id){
+        		return function(arg){
+        			var d = new $.Deferred();
+        			setTimeout(function(){
+        				console.log('callback.END');
+        				d[arg](arg);
+        			}, 1000);
+        			console.log('callback(%d):%s',id, arg);
+        			return d.promise();
+        		};
+        	};
+        }(this);
+        
+      </script>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/mosa-study" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/mosa-study/lib.min.js"></script>
+    <script>
+      CodeHighlight.execute();
+      
+      !function(g){
+      	var f = function(){};
+      	g.console = g.console || {log:f, debug:f, error:f}
+      
+      	// assertを提供する
+      	g.assert = function(val, msg) {
+      		if(!!val)
+      			console.log('成功：%s, %s', val, msg);
+      		else
+      			console.error('失敗：%s, %s', val, msg);
+      	}
+      }(this);
+    </script>
+  </body>
+</html>

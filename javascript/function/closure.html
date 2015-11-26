@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>クロージャ</title>
+    <link rel="stylesheet" href="/mosa-study/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>クロージャ</h1>
+      <section>
+        <div>まだ書いてません</div>
+      </section>
+      <section>
+        <h1>簡単なクロージャ</h1>
+        <div>
+          クロージャを簡単に説明すると、「その関数から参照できるスコープであれば、いつでも参照できる」ことです。
+          
+        </div>
+        <script title="クロージャの例" type="code/Javascript">
+          function Counter(init){
+          	var count = init; // 関数内でカウンタを定義
+          
+          	// カウントアップして返すメソッド
+          	this.up = function(){
+          		return ++count;
+          	}
+          };
+          
+          // prototypeからでもcountを参照可能？
+          Counter.prototype.increment = function(){
+          	return ++this.count;
+          }
+          
+          //
+          var a = new Counter(0);
+          var b = new Counter(4);
+          
+          // 確認
+          assert(a.count === undefined, 'a.countは外側から見えない');
+          assert(a.up() === 1, 'カウンタは正常動作する');
+          assert(b.up() === 5, 'カウンタは正常動作する');
+          
+          assert(a.increment(), 'prototypeからはcount変数が見えない！');
+        </script>
+        <div>
+          ざっくり言うと、<code>A.up</code>がクロージャです。
+          変数countを関数の中に保持します。
+          
+        </div>
+        <div>
+          prototypeから見えないのはcountはthis.countではないからです。
+          Counter関数の中で定義された変数なので、この関数外からは参照できません。
+          prototypeから参照したいのなら<code>this.count = 0;</code>の様に書きますが、この場合は外部からも参照できます。
+          
+        </div>
+        <script title="クロージャではない例" type="code/Javascript">
+          function ProtoCounter(init){
+          	this.count = init; // thisで定義
+          }
+          ProtoCounter.prototype.up = function(){return ++this.count;};
+          
+          var a = new ProtoCounter(0);
+          var b = new ProtoCounter(4);
+          assert(a.count === 0, 'a.countが見える');
+          assert(b.count === 4, 'a.countが見える');
+          assert(a.up() === 1, 'カウンタは正常動作する');
+          assert(b.up() === 5, 'カウンタは正常動作する');
+          
+        </script>
+      </section>
+      <section>
+        <h1>クロージャ活用例</h1>
+        <div>
+          色んな所で使えるが、主に非同期で実行される関数に変数を使わせたい時に使われる。
+          
+        </div>
+        <script title="クロージャの例" type="code/Javascript">
+          function getFunc(){
+          	var count = 1;
+          
+          	return function Incrementer(){
+          		assert(count++, '現在のカウンタを表示して1プラス');
+          
+          		// カウンタが5未満なら300msごとに繰り返し
+          		if(count < 5) setTimeout(Incrementer, 300);
+          	}
+          }
+          
+          var f = getFunc(); // 関数から関数を受け取る
+          assert(this['count'] === undefined, 'var countは見えない');
+          assert(f.count === undefined, 'f.countは見えない');
+          f(); // 実行すると300msごとにカウントアップ
+          
+        </script>
+        <div>
+          <code>getFunc()</code>した時点で、外側からはcount変数が見えません。
+          変数fに代入されたIncrementer関数はクロージャとしてcountを保持し続けます。
+          これにより、タイマーで起動された時にずっとcount変数を参照できます。
+          
+        </div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/mosa-study" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/mosa-study/lib.min.js"></script>
+    <script>
+      CodeHighlight.execute();
+      
+      !function(g){
+      	var f = function(){};
+      	g.console = g.console || {log:f, debug:f, error:f}
+      
+      	// assertを提供する
+      	g.assert = function(val, msg) {
+      		if(!!val)
+      			console.log('成功：%s, %s', val, msg);
+      		else
+      			console.error('失敗：%s, %s', val, msg);
+      	}
+      }(this);
+    </script>
+  </body>
+</html>
