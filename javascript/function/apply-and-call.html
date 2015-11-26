@@ -68,12 +68,10 @@
         <div>
           実行時のコンテキストを予め固定しておくことも可能です。
           つまり、関数呼び出し/メソッド呼び出しにかかわらず、thisを固定できます。
-          underscore.jsなどで使っている手法です。
-          
           
         </div>
         <script title="コンテキストのバインド" type="code/Javascript">
-          var bind = function(context, func) {
+          var bind = function(func, context) {
           	// contextを固定した関数を返す
           	return function() {
           		func.apply(context, arguments);
@@ -90,19 +88,19 @@
           }
           
           // bindするコンテキスト
-          var context = {
-          	name: 'this is context'
+          var contextObj = {
+          	name: 'this is contextObj'
           }
           
           // バインドせずに実行
           func1(); // -> this is window
           
           // contextとfunc1をバインドして実行
-          var bindedFunc1 = bind(context, func1);
-          bindedFunc1(); // -> this is context
+          var bindedFunc1 = bind(func1, contextObj);
+          bindedFunc1(); // -> this is contextObj
           
           // もう新しいコンテキストは受け付けない
-          bindedFunc1.apply({name:'new context'});　// -> this is context
+          bindedFunc1.apply({name:'new context'});　// -> this is contextObj
           
         </script>
         <div>
