@@ -23,6 +23,13 @@
       </section>
       <section>
         <h1>関数の宣言</h1>
+        <div>下記の構文で関数を宣言できます。</div>
+        <ul>
+          <li>function宣言(必須)</li>
+          <li>関数の名前(任意)</li>
+          <li>カッコつきの引数リスト(引数は0個以上、つまりなくても良い)</li>
+          <li>ブレスで囲った関数本体(囲ってあれば空でも可)</li>
+        </ul>
         <script title="関数の宣言" type="code/Javascript">
           // 名前付き関数
           function funcA(){};
@@ -34,16 +41,9 @@
           var funcB = function(){};
           
         </script>
-        <div>下記の構文で関数を宣言できます。</div>
-        <ul>
-          <li>function宣言(必須)</li>
-          <li>関数の名前(任意)</li>
-          <li>カッコつきの引数リスト(引数は0個以上、つまりなくても良い)</li>
-          <li>ブレスで囲った関数本体(囲ってあれば空でも可)</li>
-        </ul>
       </section>
       <section>
-        <h1>コールバック関数の例</h1>
+        <h1>関数を引数として渡すの例</h1>
         <div>
           Javascriptでは、配列のソートにArrays.sortがビルトインで用意されています。
           ただ、この関数のソート順は「文字列比較」なので、数値順に並べたいという希望がかないません。
@@ -65,7 +65,7 @@
           	return a - b;
           };
           
-          // sortのコールバック関数として渡すと期待通りの結果が得られる
+          // 大小を数字として判断する関数を引数として渡すと期待通りの結果が得られる
           arr.sort(compare); // -> [7, 9, 10, 20, 30, 45, 64, 78, 90, 93]
         </script>
         <ul>
@@ -79,6 +79,46 @@
           非同期実行させるためにコールバックを渡しているつもりで、実行結果を渡しているオマヌケコードは実務でも散見されます。
           
         </div>
+      </section>
+      <section>
+        <h1>関数を引数として渡すの例２</h1>
+        <div>
+          上記の例では「わかりにくいよ！ってかわからないよ！」の声多数。
+          もっと簡単にしたサンプルでリベンジ。
+          
+        </div>
+        <script title="２つの数を計算する" type="code/Javascript">
+          // ２つの数を保持しているオブジェクトを作成する
+          var m = {
+          	a: 2, b: 4, // 数字を保持
+          
+          	// 計算するロジック関数fは引数で受け取る
+          	calc: function(f) {
+          		return f(this.a, this.b);
+          	}
+          };
+          
+          // 足し算する関数
+          var add = function(a,b){return a + b};
+          
+          // 掛け算する関数
+          var multi = function(a,b) {return a * b};
+          
+          // var m = new MyObject(2,4);
+          assert(m.calc(add) === 2 + 4, '足し算された!');
+          assert(m.calc(multi) === 2 * 4, '掛け算された!');
+          
+        </script>
+        <div>
+          オブジェクトmは2と4という、２つの数字を保持しています。
+          このオブジェクトにはcalcというメソッドがありますが、計算方法は定義されていません。
+          計算する関数は外部からfという引数で受け取るように作られています。
+        </div>
+        <div>
+          ここで足し算関数'add'と掛け算関数'multi'を外部からcalc関数に渡します。
+          するとcalcでは保持していた２つの数を渡された関数に渡して実行します。
+        </div>
+        <div>これで外部から計算方法を渡し、それを使って結果を得ることができました。</div>
       </section>
       <section>
         <h1>無名関数</h1>
@@ -200,7 +240,7 @@
       
       	// assertを提供する
       	g.assert = function(val, msg) {
-      		if(!!val)
+      		if(val)
       			console.log('成功：%s, %s', val, msg);
       		else
       			console.error('失敗：%s, %s', val, msg);
