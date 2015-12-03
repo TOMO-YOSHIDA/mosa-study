@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ステートメントの最後にセミコロンを付ける</title>
+    <link rel="stylesheet" href="/mosa-study/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>ステートメントの最後にセミコロンを付ける</h1>
+      <section>
+        <h1>行末にセミコロンを付けるクセを</h1>
+        <div>
+          Javascriptは、ステートメントの終わりであるセミコロンを付ける必要がありません。
+          改行位置がステートメントの終わりとみなされれば正常にコンパイルされるからです。
+          
+        </div>
+        <script title="セミコロンなしの書き方" type="code/Javascript">
+          var s = "this is string"
+          
+          var a,b
+          
+          a = s.toString()
+          b = a.trim()
+          
+        </script>
+        <div>
+          ただし、JSのファイルサイズを小さくするためにminifyすると不具合が起きます。
+          
+        </div>
+        <script title="minify時のエラーケース" type="code/Javascript">
+          var s = "this is string" var a,b a = s.toString() b = a.trim()
+          
+        </script>
+        <div>
+          minifyする場合、改行コードをなくすのでセミコロンがないとステートメントの終わりをJSエンジンが判断できません。
+          
+        </div>
+      </section>
+      <section>
+        <h1>セミコロンをつけた書き方</h1>
+        <div>
+          単純にステートメントの最後にセミコロンを付けるだけです。
+          
+        </div>
+        <script title="セミコロンありの書き方" type="code/Javascript">
+          var s = "this is string";
+          
+          var a,b;
+          
+          a = s.toString();
+          b = a.trim();
+          
+        </script>
+        <div>これをminifyすると</div>
+        <script title="セミコロンありの書き方" type="code/Javascript">var s = "this is string";var a,b;a = s.toString();b = a.trim();</script>
+        <div>
+          となり、問題なくコンパイル・実行されます。
+          「ステートメントの終わり」を明確にすることはプログラムを見る人にとっても見やすくなります。
+          
+        </div>
+        <div>
+          CoffeeScriptではセミコロンなしで書ける、むしろ書くな的な文法ですが、ジェネレートされるJavascriptにはちゃんとセミコロンがついています。
+          
+        </div>
+        <div>JSには必要なものとして、セミコロンを付ける習慣をつけましょう。</div>
+      </section>
+      <section>
+        <h1>まとめ</h1>
+        <div class="important">ステートメントの最後には必ずセミコロンをつける</div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/mosa-study" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/mosa-study/lib.min.js"></script>
+    <script>
+      CodeHighlight.execute();
+      
+      !function(g){
+      	var f = function(){};
+      	g.console = g.console || {log:f, debug:f, error:f}
+      
+      	// assertを提供する
+      	g.assert = function(val, msg) {
+      		if(val)
+      			console.log('成功：%s, %s', val, msg);
+      		else
+      			console.error('失敗：%s, %s', val, msg);
+      	}
+      }(this);
+    </script>
+  </body>
+</html>

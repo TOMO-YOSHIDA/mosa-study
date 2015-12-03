@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TypeScript</title>
+    <link rel="stylesheet" href="/mosa-study/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>TypeScript</h1>
+      <section>
+        <h1>TypeScriptとは？</h1>
+        <div>
+          TypeScriptはJavascriptソースを吐き出すためのプログラム言語です。
+          AltJSというジャンルになります。
+          Microsoftがメインとなって進めているオープンソースプロジェクト。
+        </div>
+        <ul>
+          <li>AltJS</li>
+          <li>MS製のvscodeがTypeScript完全対応</li>
+        </ul>
+        <div>
+          Javascriptなんて直接書けばいいじゃん、っていうのが大勢だって言うのはしってます。
+          でもTypeScriptは「開発」をすすめる上での利点がたくさんあるので超オススメです。
+          
+        </div>
+      </section>
+      <section>
+        <h1>メリット</h1>
+        <ul>
+          <li>Javascriptに擬似的に「型」をもたせられる</li>
+          <li>インテリセンスによる補完が効く</li>
+          <li>vscodeを使えばリファクタリングもできる</li>
+          <li>変数スコープの問題が軽減(解消ではない)</li>
+          <li>(擬似的に)Javaの様なクラス構文が使える</li>
+        </ul>
+        <div>つまり？</div>
+        <ul>
+          <li>型でコンパイル時にチェックできる</li>
+          <li>修正の影響範囲がわかる</li>
+          <li>クラス化で開発効率UP(Javaラーを巻き込める)</li>
+        </ul>
+        <div>
+          ことで、実行前にエラーを潰せます。
+          JSではスペルミスが意図しない動作の原因になりがちですが、undefinedになるだけで実行時エラーになりにくいです。
+          「実行前に潰せる」というのはJSを書いている人なら、ありがたみがわかると思います。
+          
+        </div>
+      </section>
+      <section>
+        <h1>デメリット</h1>
+        <ul>
+          <li>コンパイルが必要</li>
+          <li>型を定義するのが面倒</li>
+          <li>環境構築が最初は面倒</li>
+          <li>「擬似的」型なので、JSで直接書かれたプログラムではチェックできない</li>
+        </ul>
+        <div>デメリットの対応策</div>
+        <ul>
+          <li>gulpにまかせて自動コンパイル</li>
+          <li>外部公開しないなら型定義のd.tsファイルは不要</li>
+          <li>環境構築はアーキテクトに任せる</li>
+        </ul>
+      </section>
+      <section>
+        <h1>変数を使ってtrue/falseの判定をする</h1>
+        <div>
+          下記の例を見てみましょう。
+          変数に文字列を入れていますが、そのままif文の判定条件になっています。
+          
+        </div>
+        <script title="falsyな値の例" type="code/Javascript"></script>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/mosa-study" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/mosa-study/lib.min.js"></script>
+    <script>
+      CodeHighlight.execute();
+      
+      !function(g){
+      	var f = function(){};
+      	g.console = g.console || {log:f, debug:f, error:f}
+      
+      	// assertを提供する
+      	g.assert = function(val, msg) {
+      		if(val)
+      			console.log('成功：%s, %s', val, msg);
+      		else
+      			console.error('失敗：%s, %s', val, msg);
+      	}
+      }(this);
+    </script>
+  </body>
+</html>
