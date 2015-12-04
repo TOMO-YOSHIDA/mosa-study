@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>script読み込みのパフォーマンス</title>
+    <link rel="stylesheet" href="/mosa-study/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>script読み込みのパフォーマンス</h1>
+      <section>
+        <div>あまり気にしていない開発者も多いようですが、script読み込みは初期表示に大きな影響を与えます。</div>
+        <div>
+          スクリプトをモジュール化してファイルをわけ、それをHTMLのscriptタグでそれぞれ読み込む場合が想定されます。
+          
+        </div>
+      </section>
+      <section>
+        <h1>scriptは直列実行である</h1>
+        <div>
+          HTMLに書かれた外部リソースは、(ブラウザが対応していれば)画像などの場合は並列に読み込むことができます。
+          scriptも並列読み込みできても良さそうですが、前後の依存関係があるために並列実行はされません。
+        </div>
+        <div>
+          例えば、下記の例ではscript-1.js〜script-5.jsまでがロードされます。<br>(※codehighlihgt.jsがうまくscriptタグ表示できないのでコメントアウトしています)
+          
+        </div>
+        <script title="scriptタグの読み込み" type="code/HTML">
+          <!--
+          <script src="./script-1.js></script>
+          <script src="./script-2.js></script>
+          <script src="./script-3.js></script>
+          <script src="./script-4.js></script>
+          <script src="./script-5.js></script>
+          -->
+          
+        </script>
+        <div>
+          並列実行できないので、1つのスクリプトがロードされたら、実行完了するまで次のスクリプトはロードされません。
+          ファイル同士で特に依存関係がなくても、ブラウザはそれを判断できないので直列実行になります。
+        </div>
+        <div>
+          また、ドキュメントのロードも停止します。
+          そのため以前はheaderにscriptタグを置くのが主流でしたが、まずはdocumentロードを優先して、bodyタグの最後にscriptタグを置く方法がメジャーです。
+          
+        </div>
+      </section>
+      <section>
+        <h1>なにが遅いのか？</h1>
+        <div>scriptタグにsrcで外部ファイルが指定された場合、下記の手順で実行されます。</div>
+        <ol>
+          <li>srcに指定された外部ファイルをサーバに問い合わせる</li>
+          <li>ファイルがあればロード開始</li>
+          <li>ファイルがなければエラー</li>
+          <li>ロードされたスクリプトを実行する</li>
+        </ol>
+        <div>
+          このうち、ボトルネックとなりやすいのは1と2です。
+          
+        </div>
+        <div>ではなにが起きているのか？</div>
+        <ol>
+          <li>サーバとの接続確立のオーバーヘッドがかかります。</li>
+          <li>ファイルサイズが大きいとそれだけロードに時間がかかります</li>
+        </ol>
+        <div>
+          ローカルでテストしている時には気づきにくいですが、本番環境にのせてネットワークをまたぐと大きく響いてきます。
+          特にモバイル環境など、貧弱な回線を使っている時は相当待たされます。
+          CPUが貧弱なモバイル端末の場合は4のスクリプト実行も影響が大きくなります。
+          
+        </div>
+        <div>
+          最近ではHTMLの先頭でjQueryなどの外部ライブラリを大量にロードしているページが多いです。
+          プラグインまで含めると、10リソースを超えることも珍しくありません。
+          そのたびに接続・ダウンロードが発生すると遅くなって当たり前ですね。
+        </div>
+        <div>
+          chromeの開発者ツールには通信速度・レイテンシのシミュレート機能があります。
+          開発者ツールのnetworkタブに"No throttling"と表示されている項目をクリックすると通信速度をシミュレートできます。
+          
+        </div>
+      </section>
+      <section>
+        <h1>対応策</h1>
+        <div>対応策は単純です。</div>
+        <ol>
+          <li>スクリプトファイルを１つにまとめる</li>
+          <li>スクリプトをminifyする</li>
+          <li>ファイルを圧縮して送信する</li>
+        </ol>
+        <h2>スクリプトファイルを１つにまとめる</h2>
+        <div>
+          単純にロードするファイルを順番にくっつけていくだけです。
+          これによって接続コストは１ファイルだけになります。
+          このページで使用されている<code>codehighlight.js</code>は記事編集時点で6ファイルから構成されていますが、lib.min.jsという1ファイルに収められています。
+          これによって接続コストが1/6になっています。
+          
+        </div>
+        <h2>スクリプトをminifyする</h2>
+        <div>
+          スクリプトの中にはたくさんの変数宣言があり、バイトに直すとそこそこ大きくなります。
+          minifyとは、例えば"username"と宣言された変数名を"u"に置き換えてファイルサイズ削減を図ります。
+          またコメントや改行文字も削除します。
+          codehighlight.jsの場合、圧縮前は22KBですが、連結・圧縮後は6KBになりました。
+        </div>
+        <div>
+          これによって人間が読むことがほぼ不可能になりますが、ファイルサイズは劇的に小さくなります。
+          minifyは、gulp-uglifyなどの圧縮ツールを使用します。
+          
+        </div>
+        <div>
+          開発中はコードを読めないと困るので、リリース時のみ使うケースがあると思います。
+          しかし、コードの書き方が原因でminify時に動作しなくなる場合もあるので、定期的にminifyして確認すると良いでしょう。
+          
+        </div>
+        <div>
+          CDNなどを使用して外部からロードする場合も、たいていはmin.jsが用意されていると思うので生JSは使わずにminifyされたファイルを使うとエコです。
+          
+          
+        </div>
+        <div class="exlink">参考：<a href="https://github.com/terinjokes/gulp-uglify" target="_blank">gulp-uglify</a></div>
+        <h2>ファイルを圧縮して送信する</h2>
+        <div>
+          HTTPサーバやアプリケーションサーバが用意する圧縮機能や圧縮済みファイルを送信する機能を使います。
+          もちろんブラウザ側も圧縮通信をサポートしている必要があります。
+          スクリプトはテキストファイルなので、けっこうな圧縮率を期待できます。
+          6KBのcodehighlight.jsは、2.6KBまで縮められました。
+          
+          
+        </div>
+      </section>
+      <section>
+        <h1>まとめ</h1>
+        <div>チューニングポイントは３つ。</div>
+        <ol>
+          <li>スクリプトファイルは可能な限り１つにまとめる</li>
+          <li>スクリプトはminifyする(min.jsを使う)</li>
+          <li>圧縮して送信する</li>
+        </ol>
+        <div>
+          scriptタグのコストについては個々の開発者ではなく、アーキテクトの気配りで劇的に改善できます。
+          覚えておきましょう。
+          
+          
+        </div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/mosa-study" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/mosa-study/lib.min.js"></script>
+    <script>
+      CodeHighlight.execute();
+      
+      !function(g){
+      	var f = function(){};
+      	g.console = g.console || {log:f, debug:f, error:f}
+      
+      	// assertを提供する
+      	g.assert = function(val, msg) {
+      		if(val)
+      			console.log('成功：%s, %s', val, msg);
+      		else
+      			console.error('失敗：%s, %s', val, msg);
+      	}
+      }(this);
+    </script>
+  </body>
+</html>
