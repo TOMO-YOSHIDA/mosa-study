@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Javascriptサポート状況のテスト</title>
+    <link rel="stylesheet" href="/mosa-study/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>Javascriptサポート状況のテスト</h1>
+      <section>
+        <div>端末のJavascriptサポート状況をテストします。</div>
+      </section>
+      <table class="result"></table>
+      <script src="../scripts/support.js"></script>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/mosa-study" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/mosa-study/lib.min.js"></script>
+    <script>
+      CodeHighlight.execute();
+      
+      !function(g){
+      	var f = function(){};
+      	g.console = g.console || {log:f, debug:f, error:f}
+      
+      	// assertを提供する
+      	g.assert = function(val, msg) {
+      		if(val)
+      			console.log('成功：%s, %s', val, msg);
+      		else
+      			console.error('失敗：%s, %s', val, msg);
+      	}
+      }(this);
+    </script>
+  </body>
+</html>
