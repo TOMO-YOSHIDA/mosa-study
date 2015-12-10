@@ -3,6 +3,7 @@
 
 	var parent = document.getElementsByClassName('result');
 
+	if (!parent.length) return;
 
 	function test(obj) {
 		var s = "";
@@ -22,7 +23,8 @@
 	var items = [
 		{ 'localStorage': g.localStorage },
 		{ 'sessionStorage': g.sessionStorage },
-		{ 'Array.prototype.forEach': Array.prototype.forEach }
+		{ 'Array.prototype.forEach': Array.prototype.forEach },
+		{ 'Array.prototype.some': Array.prototype.some },
 	];
 
 	for (var i = 0; i < items.length; i++) {
