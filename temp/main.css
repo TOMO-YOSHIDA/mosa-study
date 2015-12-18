@@ -207,7 +207,10 @@ section > div > code {
   display: inline-block;
   border-radius: 0.5em;
   background: rgba(0, 0, 0, 0.06);
+  border: 1px solid #bebebe;
+  line-height: 1.4;
   padding: 0 0.2em;
+  margin: 0 0.2em;
 }
 .flex {
   display: flex;
@@ -250,9 +253,7 @@ table td.false {
 .important {
   font-weight: bold;
 }
-.deadlink:after,
-.inspection:after,
-.making:after {
+.label {
   border-radius: 0.4em;
   padding: 0 0.4em;
   margin-left: 0.4em;
@@ -261,18 +262,51 @@ table td.false {
   font-size: 0.8em;
   vertical-align: middle;
 }
+.update:after {
+  border-radius: 0.4em;
+  padding: 0 0.4em;
+  margin-left: 0.4em;
+  font-weight: normal;
+  letter-spacing: 1px;
+  font-size: 0.8em;
+  vertical-align: middle;
+  content: "\2714 更新!";
+  background: #FF3366;
+  color: white;
+}
 .making:after {
+  border-radius: 0.4em;
+  padding: 0 0.4em;
+  margin-left: 0.4em;
+  font-weight: normal;
+  letter-spacing: 1px;
+  font-size: 0.8em;
+  vertical-align: middle;
   content: "\270e 作成中";
   background: #179C55;
   color: white;
 }
 .inspection:after {
+  border-radius: 0.4em;
+  padding: 0 0.4em;
+  margin-left: 0.4em;
+  font-weight: normal;
+  letter-spacing: 1px;
+  font-size: 0.8em;
+  vertical-align: middle;
   content: "検証中";
   background: #F1F918;
   color: #F90000;
   font-weight: bold;
 }
 .deadlink:after {
+  border-radius: 0.4em;
+  padding: 0 0.4em;
+  margin-left: 0.4em;
+  font-weight: normal;
+  letter-spacing: 1px;
+  font-size: 0.8em;
+  vertical-align: middle;
   content: "\2715 未作成";
   background: #7B7B7B;
   color: white;
